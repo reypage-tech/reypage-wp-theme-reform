@@ -1,0 +1,40 @@
+{
+ "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+ "meta": {
+  "title": "しおり住まい工房（サンプル）WordPressテーマ",
+  "author": "Reypage",
+  "description": "自主制作のサンプル。施工事例とお知らせを管理画面から更新できるテーマ。"
+ },
+ "landingPage": "/",
+ "preferredVersions": {
+  "php": "8.3",
+  "wp": "latest"
+ },
+ "features": {
+  "networking": true
+ },
+ "steps": [
+  {
+   "step": "setSiteLanguage",
+   "language": "ja"
+  },
+  {
+   "step": "installTheme",
+   "themeData": {
+    "resource": "url",
+    "url": "https://reypage.pages.dev/wp/reypage-reform-theme.zip"
+   },
+   "options": {
+    "activate": true
+   }
+  },
+  {
+   "step": "runPHP",
+   "code": "<?php\nrequire_once 'wordpress/wp-load.php';\nrequire_once ABSPATH . 'wp-admin/includes/image.php';\nrequire_once ABSPATH . 'wp-admin/includes/file.php';\nrequire_once ABSPATH . 'wp-admin/includes/media.php';\n/* 管理者の表示名を屋号に */\n$u = get_user_by( 'id', 1 );\nif ( $u ) { wp_update_user( array( 'ID' => 1, 'display_name' => 'Reypage', 'nickname' => 'Reypage', 'first_name' => '', 'last_name' => '' ) ); }\nupdate_option( 'blogname', 'しおり住まい工房（サンプル）' );\nupdate_option( 'blogdescription', 'サンプルサイト（自主制作）：会社・人物・住所・金額は架空のものです' );\nupdate_option( 'permalink_structure', '/%postname%/' );\nforeach ( get_posts( array( 'post_type' => array( 'post', 'page' ), 'numberposts' => -1, 'post_status' => 'any' ) ) as $p ) { wp_delete_post( $p->ID, true ); }\nfunction demo_img( $file ) {\n\t$src = get_theme_root() . '/shiori-sumai/img/' . $file;\n\t$tmp = wp_tempnam( $file ); copy( $src, $tmp );\n\t$id = media_handle_sideload( array( 'name' => $file, 'tmp_name' => $tmp ), 0 );\n\treturn is_wp_error( $id ) ? 0 : $id;\n}\n$works = array(\n\tarray( '台所と居間をつなげたLDKリフォーム', '<!-- wp:paragraph --><p>「台所が北側で暗く、居間との間の壁で家族の様子が見えない」というご相談でした。耐震上必要な柱は残して壁を撤去し、床下と壁に断熱材を入れています。</p><!-- /wp:paragraph -->', array( 'works_tag' => '間取りの変更・内装', 'works_build' => '木造2階建て・築31年', 'works_period' => '約6週間（住みながら）', 'works_cost' => '620万円（税込）', 'works_area' => '千草ヶ丘市' ), 'p3-1600.webp', '-3 days' ),\n\tarray( '壁付けキッチンの交換（木目の扉・白いタイル）', '<!-- wp:paragraph --><p>扉を明るい木目に、壁を掃除しやすい白いタイルに替えました。カウンターの下に照明を入れ、夜も手元が暗くなりません。工事中の4日間は、仮設の流しを用意しています。</p><!-- /wp:paragraph -->', array( 'works_tag' => 'キッチン', 'works_build' => '木造平屋・築24年', 'works_period' => '5日間', 'works_cost' => '148万円（税込）', 'works_area' => '橘ヶ浜町' ), 'p5-1600.webp', '-2 days' ),\n\tarray( '洋室の床と壁紙の張り替え', '<!-- wp:paragraph --><p>日焼けとへこみが目立ってきたフローリングを、傷のつきにくい床材に張り替えました。壁紙は、明るさを保ちつつ汚れが拭き取れるものを選んでいます。家具の移動と下地の調整も工事に含みます。</p><!-- /wp:paragraph -->', array( 'works_tag' => '内装', 'works_build' => '木造2階建て・築18年', 'works_period' => '3日間', 'works_cost' => '32万円（税込）', 'works_area' => '千草ヶ丘市' ), 'p9-1200.webp', '-1 days' ),\n);\nforeach ( $works as $w ) {\n\t$id = wp_insert_post( array( 'post_type' => 'works', 'post_status' => 'publish', 'post_author' => 1, 'post_title' => $w[0], 'post_content' => $w[1], 'post_date' => date( 'Y-m-d H:i:s', strtotime( $w[4] ) ) ) );\n\tforeach ( $w[2] as $k => $v ) { update_post_meta( $id, $k, $v ); }\n\t$img = demo_img( $w[3] ); if ( $img ) { set_post_thumbnail( $id, $img ); }\n}\n$news = array(\n\tarray( '現地調査とお見積りは無料です', '<!-- wp:paragraph --><p>担当者が伺い、寸法と配管・下地の状態を確かめます。時間は約1時間です。お見積りは1週間ほどで、項目ごとの見積書と図面をお持ちします。</p><!-- /wp:paragraph -->', '-5 days' ),\n\tarray( 'お引き渡しから1年目の無料点検について', '<!-- wp:paragraph --><p>工事が終わったら、一緒に仕上がりを確かめます。お引き渡しから1年目に、無料で点検に伺います。</p><!-- /wp:paragraph -->', '-4 days' ),\n);\nforeach ( $news as $n ) { wp_insert_post( array( 'post_type' => 'post', 'post_status' => 'publish', 'post_author' => 1, 'post_title' => $n[0], 'post_content' => $n[1], 'post_date' => date( 'Y-m-d H:i:s', strtotime( $n[2] ) ) ) ); }\n$news_page = wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'publish', 'post_title' => 'お知らせ', 'post_name' => 'news' ) );\n$front = wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'publish', 'post_title' => 'トップ', 'post_name' => 'home' ) );\nupdate_option( 'show_on_front', 'page' ); update_option( 'page_on_front', $front ); update_option( 'page_for_posts', $news_page );\nflush_rewrite_rules();\n"
+  },
+  {
+   "step": "login",
+   "username": "admin"
+  }
+ ]
+}

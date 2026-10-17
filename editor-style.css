@@ -1,0 +1,3 @@
+/* 編集画面の文字を、サイトと同じ書体に揃える */
+body,.editor-styles-wrapper{font-family:"Zen Kaku Gothic New","Noto Sans CJK JP",sans-serif;font-size:16px;line-height:1.85;color:#1f2a33}
+.editor-post-title,.wp-block-post-title{font-family:"Zen Kaku Gothic New","Noto Sans CJK JP",sans-serif;font-weight:700;font-size:28px;line-height:1.5}
