@@ -2,10 +2,6 @@
 
 架空のリフォーム会社「しおり住まい工房」のサンプルサイトを、WordPress のオリジナルテーマにしたものです。施工事例とお知らせを、お客様が管理画面から追加・修正できるように作っています。有料のプラグインは使っていません（プラグインなしで動きます）。
 
-- 静的版のサンプルサイト：https://reypage.pages.dev/reform/
-- 管理画面の説明ページ：https://reypage.pages.dev/reform/wordpress/
-- ブラウザで操作を試せるデモ（WordPress Playground）：https://playground.wordpress.net/?blueprint-url=https://reypage.pages.dev/wp/blueprint.json
-
 会社名・住所・施工事例・金額・人物はすべて架空です。
 
 ## 動作環境
@@ -102,14 +98,12 @@ playground/blueprint.json  WordPress Playground のデモ用の設定
 
 ## English summary
 
-A classic (PHP template) WordPress theme for a fictional local renovation company. It is the WordPress version of the static sample at https://reypage.pages.dev/reform/.
+A classic (PHP template) WordPress theme for a fictional local renovation company. It is the WordPress version of the static sample in reypage-sample-sites (`reform/`).
 
 - Custom post type `works` (case studies) with five structured fields (type of work, building, duration, cost, area) stored as post meta, edited in a meta box with nonce and capability checks
 - Standard posts relabelled as "News" in the admin; comments disabled
 - Simplified admin for the client's Editor account: fewer menu items and a dashboard widget with two shortcut buttons
 - No plugins required. Requires WordPress 6.4+ and PHP 8.0+
 - `playground/blueprint.json` sets up a WordPress Playground demo with sample content
-
-Try it in the browser: https://playground.wordpress.net/?blueprint-url=https://reypage.pages.dev/wp/blueprint.json
 
 Code is GPL-2.0-or-later. Photos are from Unsplash and Pexels (credits above).
